@@ -12,9 +12,8 @@
 you shout when reading code](https://www.osnews.com/images/comics/wtfm.jpg)
 
 Software engineering principles, from Robert C. Martin's book
-[*Clean
-Code*](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882)
-, adapted for Go. This is not a style guide. It's a guide to producing
+[*Clean Code*](https://www.amazon.com/Clean-Code-Handbook-Software-Craftsmanship/dp/0132350882), 
+adapted for Go. This is not a style guide. It's a guide to producing
 readable, reusable, and refactorable software in Go.
 
 Not every principle herein has to be strictly followed, and even fewer will be
@@ -85,11 +84,19 @@ We will read more code than we will ever write. It's important that the code we 
 **Bad:**
 
 ```Go
+import "time"
+
+// What the heck is 86400 again?
+time.Sleep(86400 * time.Second)
 ```
 
 **Good:**
 
 ```Go
+import "time"
+
+const SleepDuration time.Duration = 86400 * time.Second 
+time.Sleep(SleepDuration)
 ```
 
 **[⬆ back to top](#table-of-contents)**
@@ -98,10 +105,42 @@ We will read more code than we will ever write. It's important that the code we 
 
 **Bad:**
 ```Go
+import (
+    "fmt"
+    "regexp"
+)
+
+address := "One Infinite Loop, Cupertino 95014"
+cityZipCodeRegex := `^[^,\\]+[,\\\s]+(.+?)\s*(\d{5})?$`
+
+matches := regexp.MustCompile(cityZipCodeRegex).FindStringSubmatch(address)
+if len(matches) > 2 {
+	fmt.Printf("%s: %s\n", matches[1], matches[2])
+}
 ```
 
 **Good:**
 ```Go
+import (
+    "fmt"
+    "regexp"
+)
+
+// More variables = more code, but it's easier to read. 
+address := "One Infinite Loop, Cupertino 95014"
+cityZipCodePattern := `^[^,\\]+[,\\\s]+(?P<city>.+?)\s*(?P<zip_code>\d{5})?$`
+re := regexp.MustCompile(cityZipCodePattern)
+
+matches := re.FindStringSubmatch(address)
+if matches != nil {
+    cityIndex := re.SubexpIndex("city")
+    zipCodeIndex := re.SubexpIndex("zip_code")
+
+    city := matches[cityIndex]
+    zipCode := matches[zipCodeIndex]
+
+    fmt.Printf("%s, %s\n", city, zipCode)
+}
 ```
 
 **[⬆ back to top](#table-of-contents)**
