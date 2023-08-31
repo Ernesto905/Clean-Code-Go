@@ -147,3 +147,33 @@ if matches != nil {
 
 
 ### Avoid Mental Mapping 
+
+
+**Bad**
+```Go
+import "fmt"
+
+locations := [3]string{"Florida", "Michigan", "California"}
+
+for _, item := range locations {
+  // do_stuff()
+  // do_more_stuff()
+
+  // Wait, what's "item" again?
+  fmt.Println(item)
+}
+```
+
+**Good**
+```Go
+import "fmt"
+
+locations := [3]string{"Florida", "Michigan", "California"}
+
+for _, location := range locations {
+  // do_stuff()
+  // do_more_stuff()
+
+  fmt.Println(location)
+}
+```
