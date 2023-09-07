@@ -177,3 +177,30 @@ for _, location := range locations {
   fmt.Println(location)
 }
 ```
+**[⬆ back to top](#table-of-contents)**
+### Don't add unneeded context
+
+**Bad**
+```Go
+type car struct {
+    carMake string
+    carModel string
+    carColor string 
+}
+```
+
+**Good**
+```Go
+type car struct {
+    make string
+    model string 
+    color string
+}
+```
+**[⬆ back to top](#table-of-contents)**
+
+## Functions
+
+
+**[⬆ back to top](#table-of-contents)**
+
